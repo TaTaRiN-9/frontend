@@ -1,0 +1,18 @@
+.card-book {
+    display: flex;
+    text-align: center;
+    
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid green;
+    justify-content: space-around;
+}
+
+.book {
+    margin: 0 10px 0 10px;
+}
+
+.h1-class {
+    text-align: center;
+}

@@ -1,5 +1,8 @@
-.App {
-  text-align: center;
+.container-loading {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
 }
 
 .App-logo {
@@ -12,6 +15,7 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 
 .App-header {
   background-color: #282c34;
