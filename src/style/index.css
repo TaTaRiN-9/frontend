@@ -47,3 +47,22 @@ nav.visible {
   display: grid;
   place-items: center;
 }
+
+.register {
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  align-items: center;
+}
+
+.password-strength-meter {
+  height: 0.3rem;
+  background-color: lightgrey;
+  border-radius: 3px;
+  margin: .5rem 0
+}
+
+.authUserButton {
+  margin: 10px 0 0 0;
+  padding: 6px 16px !important;
+}

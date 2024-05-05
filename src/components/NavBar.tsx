@@ -41,6 +41,7 @@ export const NavBar = () => {
                 <div className="nav-items">
                     <a href="/">Книги</a>
                     <a href="/about">О нас</a>
+                    <a href="/account">Личный кабинет</a>
                 </div>
             </nav>
         </>
