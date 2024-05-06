@@ -1,24 +1,37 @@
 import './style/App.css';
 import {
-  Routes,
-  Route,
+  createBrowserRouter,
+  RouterProvider,
 } from "react-router-dom";
-import About from './pages/aboutPage';
+import AboutPage from './pages/aboutPage';
 import AccountPage from './pages/accountPage';
+import ErrorPage from './pages/errorPage';
 import { NavBar } from './components/NavBar';
 import AllBook from './components/allBook';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AllBook/>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/about',
+    element: <AboutPage/>
+  },
+  {
+    path: '/account',
+    element: <AccountPage/>
+  }
+])
 
 const App = () => {
 
   return (
     <div className='App'>
       <NavBar/>
-        <Routes>
-          <Route path='/' element={<AllBook/>}></Route>
-          <Route path='/about' element={<About/>}></Route>
-          <Route path='/account' element={<AccountPage/>}></Route>
-        </Routes>
+      <RouterProvider router={router}/>
     </div>
   );
 }

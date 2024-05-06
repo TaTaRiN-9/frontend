@@ -1,9 +1,8 @@
-import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import '../style/card.css';
 
-interface IBook {
+export interface IBook {
     id: string,
     title: string,
     description: string,
@@ -38,6 +37,8 @@ const Book = (props: Props) => {
                 })}
             </div>
         )
+    } else {
+        return <p>Нет книг</p>
     }
 }
 

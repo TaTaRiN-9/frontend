@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+#error-page {
+  text-align: center;
+}
+
 
 nav {
   top: 0;
