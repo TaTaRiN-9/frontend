@@ -7,14 +7,13 @@ import AboutPage from './pages/aboutPage';
 import AccountPage from './pages/accountPage';
 import ErrorPage from './pages/errorPage';
 import { NavBar } from './components/NavBar';
-import AllBook from './components/allBook';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import authProvider from './modules/authProvider';
+import HomePage from './pages/homePage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AllBook/>,
+    element: <HomePage/>,
     errorElement: <ErrorPage />,
   },
   {
