@@ -9,6 +9,7 @@ import ErrorPage from './pages/errorPage';
 import { NavBar } from './components/NavBar';
 import AllBook from './components/allBook';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import authProvider from './modules/authProvider';
 
 const router = createBrowserRouter([
   {

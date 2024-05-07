@@ -1,10 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, SyntheticEvent } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from "react-bootstrap/InputGroup";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
-import AllBook from "../components/allBook";
+import { useNavigate } from "react-router-dom";
 
 const AccountPage = () => {
     const atLeastOneUppercase = /[A-ZА-Я]/g; // Заглавные буквы from A to Z
@@ -20,6 +20,8 @@ const AccountPage = () => {
     const [showPass, setShowPass] = useState(false);
     const [sendAuthorizate, setSendAuthorizate] = useState(false);
 
+    const navigate = useNavigate();
+
     const passwordTracker = {
         uppercase: password.match(atLeastOneUppercase),
         lowercase: password.match(atLeastOneLowercase),
@@ -33,7 +35,7 @@ const AccountPage = () => {
     ).length;
 
     useEffect(() => {
-        if (email.indexOf('@') >= 0 && passwordStrength === 5) {
+        if ((email.indexOf('@') >= 0) && (email.indexOf('.') >= 0) && passwordStrength === 5) {
             setSendAuthorizate(true);
         }
         else {
@@ -53,10 +55,11 @@ const AccountPage = () => {
         setShowPass(!showPass);
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (event : SyntheticEvent) => {
+        event.preventDefault();
         if (sendAuthorizate) {
             console.log(11111);
-            return <AllBook />;
+            navigate('/', {replace: true});
         } else {
             console.log('Нельзя так')
         }
@@ -120,7 +123,6 @@ const AccountPage = () => {
                 }`}
             </style>
         </div>
-
     )
 }
 
