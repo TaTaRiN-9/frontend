@@ -1,42 +1,29 @@
-import {useState, useEffect} from "react";
+import {useEffect} from "react";
 import WithBookLoading from "./withBookLoading";
 import Book from "./Book";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import {fetchBooks} from "../store/Reducers/ActionCreators";
 
 const AllBook = () => {
+    const dispatch = useAppDispatch();
+    const {books, isLoading, error} = useAppSelector(state => state.bookReducer)
+
     const BookLoading = WithBookLoading(Book);
-    const [appState, setAppState] = useState({
-        loading: false,
-        books: null,
-    });
-    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        setAppState({loading: true, books: null});
-        
-        const apiUrl = 'https://localhost:7250/books';
+       dispatch(fetchBooks())
+    }, []);
 
-        fetch(apiUrl)
-        .then(res => {
-            return res.json();
-        })
-        .then((res) => {
-            return setAppState({loading: false, books: res})
-        })
-        .catch((error) => {
-            setHasError(true);
-        })
+    console.log(error);
 
-    }, [setAppState]);
-
-
-    if (hasError === false) {
+    if (error === null) {
         return (
             <div className="books">
                 <div>
                     <h1 className="h1-class">Мои книги</h1>
                 </div>
                 <div className="card-book">
-                    <BookLoading isLoading={appState.loading} books={appState.books} />
+                    <BookLoading isLoading={isLoading} books={books} />
                 </div>
             </div>
         )}

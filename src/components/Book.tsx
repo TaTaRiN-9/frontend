@@ -1,13 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import '../style/card.css';
-
-export interface IBook {
-    id: string,
-    title: string,
-    description: string,
-    price: Float64Array
-}
+import { IBook } from '../models/IBook';
 
 interface Props {
     books: Array<IBook>

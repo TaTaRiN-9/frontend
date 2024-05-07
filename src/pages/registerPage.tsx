@@ -5,8 +5,14 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { fetchUserAuth } from "../store/Reducers/ActionCreators";
+import { IUserRegister } from "../models/IUserRegister";
 
 const AccountPage = () => {
+    const dispatch = useAppDispatch();
+    const {userResponse} = useAppSelector(state => state.userReducer);
+
     const atLeastOneUppercase = /[A-ZА-Я]/g; // Заглавные буквы from A to Z
     const atLeastOneLowercase = /[a-zа-я]/g; // Маленькие буквы from a to z
     const atLeastOneNumeric = /[0-9]/g; // числа от 0 до 9
@@ -20,7 +26,7 @@ const AccountPage = () => {
     const [showPass, setShowPass] = useState(false);
     const [sendAuthorizate, setSendAuthorizate] = useState(false);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const passwordTracker = {
         uppercase: password.match(atLeastOneUppercase),
@@ -55,11 +61,17 @@ const AccountPage = () => {
         setShowPass(!showPass);
     }
 
-    const handleSubmit = (event : SyntheticEvent) => {
+    const handleSubmit = async (event : SyntheticEvent) => {
         event.preventDefault();
         if (sendAuthorizate) {
             console.log(11111);
-            navigate('/', {replace: true});
+            const user : IUserRegister = {
+                name: null,
+                email: email,
+                password: password
+            }
+            await dispatch(fetchUserAuth(user))
+            console.log(userResponse);
         } else {
             console.log('Нельзя так')
         }
@@ -67,7 +79,7 @@ const AccountPage = () => {
 
     return (
         <div className="register">
-            <h1>Авторизация</h1>
+            <h1>Регистрация</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>

@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import AboutPage from './pages/aboutPage';
-import AccountPage from './pages/accountPage';
+import AccountPage from './pages/registerPage';
 import ErrorPage from './pages/errorPage';
 import { NavBar } from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';

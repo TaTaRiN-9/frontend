@@ -1,4 +1,3 @@
-import React from 'react';
 import AllBook from '../components/allBook';
 
 const HomePage = () => {
