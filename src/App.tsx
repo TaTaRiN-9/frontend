@@ -1,28 +1,50 @@
 import './style/App.css';
+import './style/cardInBasket.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import AboutPage from './pages/aboutPage';
-import AccountPage from './pages/registerPage';
-import ErrorPage from './pages/errorPage';
-import { NavBar } from './components/NavBar';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from "react-toastify";
+
 import HomePage from './pages/homePage';
+import AboutPage from './pages/aboutPage';
+import AccountPage from './pages/accountPage';
+import RegisterPage from './pages/registerPage';
+import ErrorPage from './pages/errorPage';
+import BasketPage  from './pages/basketPage';
+
+import { NavBar } from './components/NavBar';
+
+import { ShoppingBasketProvider } from './context/shoppingBasket'
+import LoginPage from './pages/loginPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage/>,
+    element: <HomePage />,
     errorElement: <ErrorPage />,
   },
   {
     path: '/about',
-    element: <AboutPage/>
+    element: <AboutPage />
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/basket',
+    element: <BasketPage />,
   },
   {
     path: '/account',
-    element: <AccountPage/>
+    element: <AccountPage />
   }
 ])
 
@@ -30,8 +52,11 @@ const App = () => {
 
   return (
     <div className='App'>
-      <NavBar/>
-      <RouterProvider router={router}/>
+      <ShoppingBasketProvider>
+        <ToastContainer />
+        <NavBar/>
+        <RouterProvider router={router}/>
+      </ShoppingBasketProvider>
     </div>
   );
 }

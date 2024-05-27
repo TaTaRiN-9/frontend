@@ -1,14 +1,14 @@
 // дополнительная обертка над reducer'ами, которая добавляет дополнительный функционал и упрощает работу.
 
-import { SerializedError, createSlice } from "@reduxjs/toolkit"
-import { fetchUserAuth } from "./ActionCreators"
+import { createSlice } from "@reduxjs/toolkit"
+import { fetchUserRegister } from "./ActionCreators"
 import { IUserResponse } from "../../models/IUserResponse"
 
-
+// интерфейс для ответа
 interface UserStateResponse {
     userResponse: IUserResponse | null,
     isLoading: boolean,
-    error: SerializedError | null
+    error: string | null
 }
 
 // начальное состояние 
@@ -18,24 +18,42 @@ const initialState: UserStateResponse = {
     error: null
 }
 
+// проработка всех состояний, а именно успешно, с ошибкой и загрузка
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        logout: (state, action) => {
+            state.userResponse = null;
+            state.isLoading = false;
+            state.error = null;
+            localStorage.removeItem("Authorization");
+        }
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchUserAuth.fulfilled, (state, action) => {
+            .addCase(fetchUserRegister.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.error = null;
+                console.log("USerSlice: " + action.payload);
                 state.userResponse = action.payload;
+                console.log("UserSlice-userResponse: " + state.userResponse);
             })
-            .addCase(fetchUserAuth.pending, (state) => {
+            .addCase(fetchUserRegister.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(fetchUserAuth.rejected, (state, action) => {
+            .addCase(fetchUserRegister.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.error;
+                console.log("UserSlice-Error: " + action.error.message);
+                if (action.error.message === undefined){
+                    state.error = null;
+                } else {
+                    state.error = action.error.message;
+                }
             })
     }
 })
 
 export default userSlice.reducer;
+
+export const {logout} = userSlice.actions;

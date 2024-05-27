@@ -1,4 +1,9 @@
+interface IUser {
+    id: number,
+    email: string
+}
+
 export interface IUserResponse {
-    user: Object,
+    user: IUser,
     access_token: string
 }

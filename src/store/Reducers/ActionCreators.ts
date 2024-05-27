@@ -14,26 +14,30 @@ export const fetchBooks = createAsyncThunk('book/fetchAll', async (_, thunkAPI) 
     }
 })
 
-export const fetchUserAuth = createAsyncThunk('user/auth', 
-        async (user: IUserRegister) => {
+export const fetchUserRegister = createAsyncThunk('user/auth', 
+        async (user: IUserRegister, thunkAPI) => {
     try {
         const response = await axios({
             method: 'post',
+            // validateStatus: (status) =>{
+            //     return status >= 200 && status <= 500;
+            // },
             headers: {
                 'Content-Type': 'application/json'
             },
             url: 'https://localhost:7250/Auth/register',
             data: {
-                name: user.name,
                 email: user.email,
                 password: user.password,
             }
         })
         return response.data;
     } catch (error: any) {
-        return error.message;
+        console.log("Action-Error: " + error.message);
+        return thunkAPI.rejectWithValue(error.message);
     }
 })
+
 
 // export const fetchBooks = () => async (dispatch: AppDispatch) => {
 //     try {

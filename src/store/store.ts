@@ -7,6 +7,7 @@ const rootReducer = combineReducers({
     bookReducer
 });
 
+// хранилище
 export const setupStore = () => {
     return configureStore({
     reducer: rootReducer

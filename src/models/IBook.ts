@@ -1,6 +1,7 @@
 export interface IBook {
-    id: string,
+    id: number,
     title: string,
     description: string,
-    price: Float64Array
+    price: number,
+    category: string
 }

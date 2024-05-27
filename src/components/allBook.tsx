@@ -1,36 +1,46 @@
-import {useEffect} from "react";
+import { useEffect, useState } from "react";
 import WithBookLoading from "./withBookLoading";
-import Book from "./Book";
+import Book from "./checkBooks";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import {fetchBooks} from "../store/Reducers/ActionCreators";
+import { fetchBooks } from "../store/Reducers/ActionCreators";
 
 const AllBook = () => {
+    // сортировка нужна будет позже
+    // const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+    // const [names, setNames] = useState<string>("");
+    // const [sortByPriceAsc, setSortByPriceAsc] = useState<boolean>(true);
+    // const [sortstr, setsortstr] = useState<string>("");
+
+    // const [isSearchVisible, setIsSearchVisible] = useState(false);
+    // const [showSearch, setShowSearch] = useState<boolean>(false);
+
+
     const dispatch = useAppDispatch();
-    const {books, isLoading, error} = useAppSelector(state => state.bookReducer)
+    const { books, isLoading, error } = useAppSelector(state => state.bookReducer)
 
     const BookLoading = WithBookLoading(Book);
 
     useEffect(() => {
-       dispatch(fetchBooks())
+        dispatch(fetchBooks())
     }, []);
-
-    console.log(error);
 
     if (error === null) {
         return (
             <div className="books">
                 <div>
-                    <h1 className="h1-class">Мои книги</h1>
+                    <h1 className="h1-class">Каталог книг</h1>
                 </div>
-                <div className="card-book">
+                <div>
                     <BookLoading isLoading={isLoading} books={books} />
                 </div>
             </div>
-        )}
+        )
+    }
     else {
         return (
             <>
-                <h1>Книги не найдены</h1>
+                <h1>Каталог книг</h1>
+                <p>Что-то пошло не так, попробуйте позже :(</p>
             </>
         )
     }

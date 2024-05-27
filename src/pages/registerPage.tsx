@@ -5,14 +5,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { fetchUserAuth } from "../store/Reducers/ActionCreators";
-import { IUserRegister } from "../models/IUserRegister";
+import axios from "axios";
 
-const AccountPage = () => {
-    const dispatch = useAppDispatch();
-    const {userResponse} = useAppSelector(state => state.userReducer);
-
+const RegisterPage = () => {
     const atLeastOneUppercase = /[A-ZА-Я]/g; // Заглавные буквы from A to Z
     const atLeastOneLowercase = /[a-zа-я]/g; // Маленькие буквы from a to z
     const atLeastOneNumeric = /[0-9]/g; // числа от 0 до 9
@@ -25,8 +20,10 @@ const AccountPage = () => {
     const [meter, setMeter] = useState(false);
     const [showPass, setShowPass] = useState(false);
     const [sendAuthorizate, setSendAuthorizate] = useState(false);
+    const [showErrorEmail, setShowErrorEmail] = useState(false);
+    const [errorRequest, setErrorRequest] = useState(false);
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const passwordTracker = {
         uppercase: password.match(atLeastOneUppercase),
@@ -43,11 +40,18 @@ const AccountPage = () => {
     useEffect(() => {
         if ((email.indexOf('@') >= 0) && (email.indexOf('.') >= 0) && passwordStrength === 5) {
             setSendAuthorizate(true);
+            setShowErrorEmail(false);
         }
         else {
             setSendAuthorizate(false);
         }
     }, [passwordStrength, password, email])
+
+    useEffect(() => {
+        if (errorRequest === true) {
+            setErrorRequest(false);
+        }
+    }, [email])
 
     function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
         setUserState(event.target.value);
@@ -61,28 +65,38 @@ const AccountPage = () => {
         setShowPass(!showPass);
     }
 
-    const handleSubmit = async (event : SyntheticEvent) => {
+    const handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault();
         if (sendAuthorizate) {
-            console.log(11111);
-            const user : IUserRegister = {
-                name: null,
-                email: email,
-                password: password
+            try {
+                const response = await axios.post(
+                    "https://localhost:7250/Auth/register",
+                    { email: email, password: password }
+                  );
+                
+                  localStorage.setItem("token", "Bearer " + response.data.access_token);
+                  localStorage.setItem("user", email)
+                  navigate("/", {replace: true})
+            } catch (e: any) {
+                console.log(e);
+                setErrorRequest(true);
             }
-            await dispatch(fetchUserAuth(user))
-            console.log(userResponse);
         } else {
-            console.log('Нельзя так')
+            setShowErrorEmail(true);
         }
     }
 
     return (
         <div className="register">
             <h1>Регистрация</h1>
+            {errorRequest && <p style={{color: 'red'}}>Пользователь с таким email уже существует!</p>}
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
+                    {showErrorEmail && 
+                    <p style={{ color: 'red', margin: '-2px 0 2px 0' }}>
+                        Email должен быть оформлен верно.
+                    </p>}
                     <Form.Control type="email" placeholder="Введите email" onChange={handleEmailChange} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -95,11 +109,11 @@ const AccountPage = () => {
                             onChange={handlePasswordChange}
                             value={password}
                             name="password" />
-                            <InputGroup.Text>
-                                <i onClick={handleShowPassword}>
-                                    {showPass ? <MdOutlineRemoveRedEye /> : <FaRegEyeSlash />}
-                                </i>
-                            </InputGroup.Text>
+                        <InputGroup.Text>
+                            <i onClick={handleShowPassword}>
+                                {showPass ? <MdOutlineRemoveRedEye /> : <FaRegEyeSlash />}
+                            </i>
+                        </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
                 {meter && (
@@ -116,10 +130,14 @@ const AccountPage = () => {
                         </div>
                     </div>
                 )}
-                <Button className="authUserButton" variant="primary" type="submit">
-                    Submit
+                <Button className="authUserButton" variant="secondary"
+                    type="submit">
+                    Зарегистрироваться
                 </Button>
             </Form>
+            <div className="divNavigate">
+                <p><a href="/login">Уже есть аккаунт?</a></p>
+            </div>
             <style>
                 {`
                 .password-strength-meter::before {
@@ -138,4 +156,4 @@ const AccountPage = () => {
     )
 }
 
-export default AccountPage;
+export default RegisterPage;

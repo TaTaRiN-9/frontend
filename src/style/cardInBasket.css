@@ -1,0 +1,27 @@
+.divNavigate {
+    margin-top: 20px;
+}
+
+.cardInBasket {
+    width: 800px;
+    margin: 10px 5px 10px 5px;
+    border: 1px solid green;
+}
+
+.basket {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#removeBasket {
+    background-color: rgb(226, 51, 51);
+    right: 260px;
+    position: absolute;
+}
+
+.orderButton {
+    margin-bottom: 20px;
+}

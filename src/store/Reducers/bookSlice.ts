@@ -4,12 +4,14 @@ import { fetchBooks } from "./ActionCreators";
 
 interface BookState {
     books: IBook[],
+    booksOriginal: IBook[],
     isLoading: boolean,
     error: SerializedError | null;
 }
 
 const initialState: BookState = {
     books: [],
+    booksOriginal: [],
     isLoading: false,
     error: null
 } 
@@ -23,6 +25,7 @@ export const bookSlice = createSlice({
             .addCase(fetchBooks.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.books = action.payload;
+                state.booksOriginal = action.payload;
             })
             .addCase(fetchBooks.pending, (state) => {
                 state.isLoading = true;
